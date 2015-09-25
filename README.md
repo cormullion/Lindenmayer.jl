@@ -27,14 +27,14 @@ self-similar fractals such as iterated function systems.
 
 In this module, a Lindenmayer System (LSystem) object consists of:
 
-- Rules
+- Rules:
     a dictionary of transformation rules that
     replace a character with one or more
 
-- Initial state
+- Initial state:
     the initial state for the system (also called "the Axiom")
 
-- State
+- State:
     the current evolved state (initially empty, added when the system is evaluated)
 
 You  can define an L-System like this:
@@ -48,9 +48,7 @@ strings.
 
 To draw the LSystems, we can use a Turtle, as in Turtle Graphics. Each individual
 character used is assigned a sequence of one or more graphics commands. For
-example, "F" converts to "Forward()". This way, the LSystem's current state can
-be drawn once it's evaluated. The graphics dictionary is common to all LSystems.
-
+example, "F" converts to "Forward()". This is hard-coded in the `render()` function.
 Graphics are currently provided by Luxor.jl.
 
 To evaluate and draw a Lindenmayer system, use one of the following forms:
