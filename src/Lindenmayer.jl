@@ -34,7 +34,7 @@ end
 """
     evaluate(ls::LSystem, iterations=1)
 
-    Apply the rules in the LSystem to the initial state repeatedly and simultaneously.
+    Apply the rules in the LSystem to the initial state repeatedly.
     The ls.state array holds the result.
 
 """
@@ -64,8 +64,7 @@ end
 """
     render(ls::LSystem)
 
-    Once the LSystem has been evaluated, the LSystem.state can be drawn, by
-    looking up the graphics command(s) for each 'letter' in the `graphics` dictionary.
+    Once the LSystem has been evaluated, the LSystem.state can be drawn.
 
 """
 
@@ -93,62 +92,78 @@ function render(ls::LSystem; debug=false)
     counter
 end
 
-"""
-This dictionary contains the graphical commands that match the symbols in the
-LSystem alphabet. They're currently calling Luxor graphics commands.
+function render(ls::LSystem, t, stepdistance, rotangle; debug=false)
+    counter = 1
+    # set the color before we start
+    Pencolor(t, t.pencolor...)
+    for a in ls.state
+        command = string(Char(a))
+        if command =="F"
+            Forward(t, stepdistance)
+        elseif command =="G"
+            Forward(t, stepdistance)
+        elseif command =="B"
+            Turn(t, 180)
+            Forward(t, stepdistance)
+            Turn(t, 180)
+        elseif command =="V"
+            Turn(t, 180)
+            Forward(t, stepdistance)
+            Turn(t, 180)
+        elseif command =="f"
+            Forward(t, stepdistance/2)
+        elseif command =="b"
+            Turn(t, 180)
+            Forward(t, stepdistance/2)
+        elseif command =="U"
+            Penup(t)
+        elseif command =="D"
+            Pendown(t)
+        elseif command =="+"
+            Turn(t, rotangle)
+        elseif command =="-"
+            Turn(t, -rotangle)
+        elseif command =="r"
+            rotangle = [10, 15, 30, 45, 60][rand(1:end)]
+        elseif command =="T"
+            randomhue()
+        elseif command =="t"
+            HueShift(t, 5) # shift hue round the Hue scale (0-360)
+        elseif command =="c"
+            Randomize_saturation(t) # shift saturation
+        elseif command =="O"
+            Pen_opacity_random(t)
+        elseif command =="l"
+            stepdistance = stepdistance + 1 # larger
+        elseif command =="s"
+            stepdistance = stepdistance - 1 # smaller
+        elseif command =="8"
+            Penwidth(t, 8)
+        elseif command =="5"
+            Penwidth(t, 5)
+        elseif command =="4"
+            Penwidth(t, 4)
+        elseif command =="3"
+            Penwidth(t, 3)
+        elseif command =="2"
+            Penwidth(t, 2)
+        elseif command =="1"
+            Penwidth(t, 0.5)
+        elseif command =="o"
+            Circle(t, stepdistance/4)
+        elseif command =="q"
+            Rectangle(t, stepdistance/4, stepdistance/4)
+        elseif command =="["
+            Push(t) # push
+        elseif command =="]"
+            Pop(t)   # pop
+        end
 
-free variables that do nothing X Y P Q M N, often used as placeholders in
-complex L-systems
-"""
+        counter += 1
+    end
+    counter
 
-const graphics = Dict{String, Array{Expr, 1}}(
-# forward while drawing, we need two sometimes...
-"F" => [:(Forward(t, stepdistance))],
-"G" => [:(Forward(t, stepdistance))],
-
-# back
-"B" => [:(Turn(t, 180)), :(Forward(t, stepdistance)), :(Turn(t, 180))],
-"V" => [:(Turn(t, 180)), :(Forward(t, stepdistance)), :(Turn(t, 180))],
-
-# half forward and half back
-"f" => [:(Forward(t, stepdistance/2))],
-"b" => [:(Turn(t, 180)), :(Forward(t, stepdistance/2))],
-
-# pen up and down
-"U" => [:(Penup(t))],
-"D" => [:(Pendown(t))],
-
-# rotations
-"+" => [:(Turn(t, rotangle))],
-"-" => [:(Turn(t, -rotangle))],
-"r" => [:(rotangle = [10, 15, 30, 45, 60][rand(1:end)])],
-
-# tint and color - (color/hue)
-"T" => [:(randomhue())],
-"t" => [:(HueShift(t, 5))], # shift hue round the Hue scale (0-360)
-"c" => [:(Randomize_saturation(t))], # shift saturation
-"O" => [:(Pen_opacity_random(t))],
-
-# change forward size
-"l" => [:(stepdistance = stepdistance + 1)], # larger
-"s" => [:(stepdistance = stepdistance - 1)], # smaller
-
-# change pen thickness
-"8" => [:(Penwidth(t, 8))],
-"5" => [:(Penwidth(t, 5))],
-"4" => [:(Penwidth(t, 4))],
-"3" => [:(Penwidth(t, 3))],
-"2" => [:(Penwidth(t, 2))],
-"1" => [:(Penwidth(t, 0.5))],
-
-# shapes
-"o" => [:(Circle(t, stepdistance/4))],
-"q" => [:(Rectangle(t, stepdistance/4, stepdistance/4))],
-
-# stack
-"["  => [:(Push(t))], # push
-"]"  => [:(Pop(t))]   # pop
-)
+end
 
 """
     To draw a Lindenmayer system, use drawLSystem()
@@ -179,7 +194,6 @@ function drawLSystem(
         startingy=0,
         startingorientation=0 # -pi/2 means turtle points North on the page (although that's negative y...)
         )
-    global t, stepdistance=forward, rotangle=turn
     # use the stored initial state, because the state will grow
     lsystem.state = lsystem.initial_state
     t = Turtle(0, 0, true, startingorientation, startingpen)
@@ -193,7 +207,7 @@ function drawLSystem(
     translate(startingx, startingy)
     evaluate(lsystem, iterations, debug=debugging)
     println("evaluated LSystem, now starting to render to file $(filename)...")
-    count = render(lsystem, debug=debugging)
+    count = render(lsystem, t, forward, turn, debug=debugging)
     println("carried out $count graphical instructions")
     finish()
     preview()
