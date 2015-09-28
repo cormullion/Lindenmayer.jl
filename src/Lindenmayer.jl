@@ -12,6 +12,7 @@ type LSystem
     initial_state::Array{Int64, 1}
     function LSystem(rules, state_as_string)
         newlsystem = new(rules, string_to_array(state_as_string), string_to_array(state_as_string))
+        return newlsystem
     end
 end
 
@@ -68,31 +69,7 @@ end
 
 """
 
-function render(ls::LSystem; debug=false)
-    counter = 1
-    # set the color before we start
-    Pencolor(t, t.pencolor...)
-    for a in ls.state
-        # convert from number to letter: string(Char(70))
-        if haskey(graphics, string(Char(a))) # ignore non-graphical elements
-            c = graphics[string(Char(a))]
-            debug == true && println(c)
-            if length(c) > 1    # might have an entry with more than one command
-                for e in c
-                    eval(e)
-                end
-            else                # single command
-                eval(c[1])
-            end
-        end
-        # draw text counter for debugging
-        #  debug == true && eval(:(Text(t, $(string(counter)))))
-        counter += 1
-    end
-    counter
-end
-
-function render(ls::LSystem, t, stepdistance, rotangle; debug=false)
+function render(ls::LSystem, t::Turtle, stepdistance, rotangle; debug=false)
     counter = 1
     # set the color before we start
     Pencolor(t, t.pencolor...)
@@ -162,8 +139,8 @@ function render(ls::LSystem, t, stepdistance, rotangle; debug=false)
         counter += 1
     end
     counter
-
 end
+
 
 """
     To draw a Lindenmayer system, use drawLSystem()
@@ -207,8 +184,8 @@ function drawLSystem(
     translate(startingx, startingy)
     evaluate(lsystem, iterations, debug=debugging)
     println("evaluated LSystem, now starting to render to file $(filename)...")
-    count = render(lsystem, t, forward, turn, debug=debugging)
-    println("carried out $count graphical instructions")
+    counter = render(lsystem, t, forward, turn, debug=debugging)
+    println("carried out $counter graphical instructions")
     finish()
     preview()
 end
