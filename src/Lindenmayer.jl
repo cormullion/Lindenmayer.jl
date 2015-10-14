@@ -7,7 +7,7 @@ export drawLSystem, LSystem
 using Luxor, Colors
 
 type LSystem
-    rules::Dict{String, String}
+    rules::Dict{AbstractString, AbstractString}
     state::Array{Int64, 1}
     initial_state::Array{Int64, 1}
     function LSystem(rules, state_as_string)
@@ -16,7 +16,7 @@ type LSystem
     end
 end
 
-function string_to_array(str::String)
+function string_to_array(str::AbstractString)
     temp = Array{Int64, 1}()
     for c in str
         push!(temp, Int(c))
