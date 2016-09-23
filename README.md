@@ -37,7 +37,7 @@ In this module, a Lindenmayer System (LSystem) object consists of:
 - State:
     the current evolved state (initially empty, added when the system is evaluated)
 
-You  can define an L-System like this:
+You can define an L-System like this:
 
     koch = LSystem(Dict("F" => "F+F--F+F"), "F")
 

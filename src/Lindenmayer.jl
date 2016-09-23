@@ -1,4 +1,4 @@
-VERSION >= v"0.4.0-dev+6641" && __precompile__()
+__precompile__()
 
 module Lindenmayer
 
@@ -35,14 +35,13 @@ end
 """
     evaluate(ls::LSystem, iterations=1)
 
-    Apply the rules in the LSystem to the initial state repeatedly.
-    The ls.state array holds the result.
-
+Apply the rules in the LSystem to the initial state repeatedly.
+The ls.state array holds the result.
 """
 
 function evaluate(ls::LSystem, iterations=1; debug=false)
     for i in 1:iterations
-        println("iteration $i" )
+        debug && println("iteration $i" )
         the_state = Int64[]
         for j in 1:length(ls.state) # each character in state
             s = string(Char(ls.state[j]))
@@ -65,8 +64,7 @@ end
 """
     render(ls::LSystem)
 
-    Once the LSystem has been evaluated, the LSystem.state can be drawn.
-
+Once the LSystem has been evaluated, the LSystem.state can be drawn.
 """
 
 function render(ls::LSystem, t::Turtle, stepdistance, rotangle; debug=false)
@@ -143,17 +141,17 @@ end
 
 
 """
-    To draw a Lindenmayer system, use drawLSystem()
+To draw a Lindenmayer system, use drawLSystem()
 
-    drawLSystem(lsystem::LSystem ; forward=30, turn=45, iterations=6)
+drawLSystem(lsystem::LSystem ; forward=30, turn=45, iterations=6)
 
-    where `lsystem` is the definition of a L-System; rules followed by initial state
+where `lsystem` is the definition of a L-System; rules followed by initial state
 
-        newsystem = LSystem(Dict("F" => "AGCFCGAT", "G" => "CFAGAFC"), "F")
+    newsystem = LSystem(Dict("F" => "AGCFCGAT", "G" => "CFAGAFC"), "F")
 
-    You can change or add rules like this:
+You can change or add rules like this:
 
-        koch.rules["F"] = "OFO"
+    koch.rules["F"] = "OFO"
 """
 
 function drawLSystem(
@@ -182,12 +180,13 @@ function drawLSystem(
     setopacity(0.9)
     fontsize(2)
     translate(startingx, startingy)
+    println("starting to evaluate LSystem...")
     evaluate(lsystem, iterations, debug=debugging)
-    println("evaluated LSystem, now starting to render to file $(filename)...")
+    println("...evaluated LSystem, now starting to render to file $(filename)...")
     counter = render(lsystem, t, forward, turn, debug=debugging)
-    println("carried out $counter graphical instructions")
+    println("...carried out $counter graphical instructions")
     finish()
-    preview()
+    println("...finished, saved in file $(filename)...")
 end
 
 end # module
