@@ -7,7 +7,7 @@ export drawLSystem, LSystem
 using Luxor, Colors
 
 type LSystem
-    rules::Dict{AbstractString, AbstractString}
+    rules::Dict{String, String}
     state::Array{Int64, 1}
     initial_state::Array{Int64, 1}
     function LSystem(rules, state_as_string)
@@ -16,7 +16,7 @@ type LSystem
     end
 end
 
-function string_to_array(str::AbstractString)
+function string_to_array(str::String)
     temp = Array{Int64, 1}()
     for c in str
         push!(temp, Int(c))
@@ -35,14 +35,15 @@ end
 """
     evaluate(ls::LSystem, iterations=1)
 
-Apply the rules in the LSystem to the initial state repeatedly.
-The ls.state array holds the result.
-"""
+Apply the rules in the LSystem to the initial state repeatedly. The ls.state array holds
+the result.
 
+This must be inefficient, creating a new copy of the state each time......? :(
+"""
 function evaluate(ls::LSystem, iterations=1; debug=false)
     for i in 1:iterations
-        debug && println("iteration $i" )
-        the_state = Int64[]
+        debug && println("iteration $i")
+        the_state = Array{Int64, 1}()
         for j in 1:length(ls.state) # each character in state
             s = string(Char(ls.state[j]))
             if haskey(ls.rules, s)
@@ -66,7 +67,6 @@ end
 
 Once the LSystem has been evaluated, the LSystem.state can be drawn.
 """
-
 function render(ls::LSystem, t::Turtle, stepdistance, rotangle; debug=false)
     counter = 1
     # set the color before we start
@@ -112,8 +112,6 @@ function render(ls::LSystem, t::Turtle, stepdistance, rotangle; debug=false)
             stepdistance = stepdistance + 1 # larger
         elseif command =="s"
             stepdistance = stepdistance - 1 # smaller
-        elseif command =="8"
-            Penwidth(t, 8)
         elseif command =="5"
             Penwidth(t, 5)
         elseif command =="4"
@@ -123,6 +121,8 @@ function render(ls::LSystem, t::Turtle, stepdistance, rotangle; debug=false)
         elseif command =="2"
             Penwidth(t, 2)
         elseif command =="1"
+            Penwidth(t, 1)
+        elseif command =="n"
             Penwidth(t, 0.5)
         elseif command =="o"
             Circle(t, stepdistance/4)
@@ -133,7 +133,6 @@ function render(ls::LSystem, t::Turtle, stepdistance, rotangle; debug=false)
         elseif command =="]"
             Pop(t)   # pop
         end
-
         counter += 1
     end
     counter
@@ -141,19 +140,31 @@ end
 
 
 """
-To draw a Lindenmayer system, use drawLSystem()
+    drawLSystem(lsystem::LSystem ;
+           # optional settings:
+           forward=15,
+           turn=45,
+           iterations=3,
+           filename="/tmp/lsystem.pdf",
+           debugging=false,
+           width=1000,
+           height=1000,
+           startingpen=(0.3, 0.6, 0.8), # starting color RGB
+           startingx=0,
+           startingy=0,
+           startingorientation=0,
+           showpreview=true
 
-drawLSystem(lsystem::LSystem ; forward=30, turn=45, iterations=6)
+Draw a Lindenmayer system. `lsystem` is the definition of a L-System (rules followed by initial state).
 
-where `lsystem` is the definition of a L-System; rules followed by initial state
+For example:
 
     newsystem = LSystem(Dict("F" => "AGCFCGAT", "G" => "CFAGAFC"), "F")
 
 You can change or add rules like this:
 
-    koch.rules["F"] = "OFO"
+    newsystem.rules["F"] = "OFO"
 """
-
 function drawLSystem(
       lsystem::LSystem ;
         # optional settings:
@@ -167,7 +178,8 @@ function drawLSystem(
         startingpen=(0.3, 0.6, 0.8), # starting color RGB
         startingx=0,
         startingy=0,
-        startingorientation=0 # -pi/2 means turtle points North on the page (although that's negative y...)
+        startingorientation=0, # -pi/2 means turtle points North on the page (although that's negative y...)
+        showpreview=true
         )
     # use the stored initial state, because the state will grow
     lsystem.state = lsystem.initial_state
@@ -175,7 +187,7 @@ function drawLSystem(
     Drawing(width, height, "$filename")
     origin()
     background("black")
-    setline(2)
+    setline(1)
     setlinecap("round")
     setopacity(0.9)
     fontsize(2)
@@ -187,6 +199,9 @@ function drawLSystem(
     println("...carried out $counter graphical instructions")
     finish()
     println("...finished, saved in file $(filename)...")
+    if showpreview == true
+        preview()
+    end
 end
 
 end # module
