@@ -138,7 +138,6 @@ function render(ls::LSystem, t::Turtle, stepdistance, rotangle; debug=false)
     counter
 end
 
-
 """
     drawLSystem(lsystem::LSystem ;
            # optional settings:
