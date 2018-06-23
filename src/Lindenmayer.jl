@@ -6,7 +6,7 @@ export drawLSystem, LSystem
 
 using Luxor, Colors
 
-type LSystem
+mutable struct LSystem
     rules::Dict{String, String}
     state::Array{Int64, 1}
     initial_state::Array{Int64, 1}
