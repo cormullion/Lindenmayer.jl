@@ -1,5 +1,4 @@
-using Lindenmayer
-using Base.Test
+using Lindenmayer, Test
 
 simple                = LSystem(Dict("F" => "F[t+FoF-F]"), "F")
 koch                  = LSystem(Dict("F" => "F+F-"), "F") # use turn of 60 degrees
