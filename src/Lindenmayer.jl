@@ -4,6 +4,71 @@ export drawLSystem, LSystem
 
 using Luxor, Colors
 
+"""
+An LSystem, or Lindenmayer system, is a set of rules that
+can define recursive patterns.
+
+You can define an L-System like this:
+
+```
+koch = LSystem(Dict("F" => "F+F--F+F"), "F")
+```
+
+This says: there's one rule; replace "F" with "F+F--F+F" for
+each iteration. And start off with an initial state
+consisting of just a single "F".
+
+To draw the LSystem we use Luxor.jl's Turtle, which
+interprets the characters in the rule as instructions. For
+example, "F" converts to "Forward()". "+" rotates clockwise,
+"-" rotates counterclockwise.
+
+So, for this Koch LSystem, the first iteration draws four
+"F" lines, and changes direction after drawing them. The
+length of the lines and the angle of the turn, and other
+starting parameters, can be specified when you evaluate the
+LSystem.
+
+To evaluate and draw the Lindenmayer system, use functions
+like this:
+
+```
+drawLSystem(lsystem)
+drawLSystem(lsystem, forward=30, turn=45, iterations=6)
+drawLSystem(lsystem, filename="/tmp/lsystem.pdf")
+```
+
+Or you could do it in a single function call:
+
+```
+drawLSystem(LSystem(Dict("F" => "5F+F--F+Ftt"), "F"),
+    startingx = -400,
+    forward = 4,
+    turn = 80,
+    iterations = 6)
+```
+
+Keyword options for `drawLSystem` include:
+
+```
+forward=15,
+turn=45,
+iterations=3,
+filename="/tmp/lsystem.pdf",
+width=1000,
+height=1000,
+startingpen=(0.3, 0.6, 0.8), # starting color RGB
+startingx=0,
+startingy=0,
+startingorientation=0,
+showpreview=true
+```
+
+You can vary the line width using commands "1", "2",
+"3", "4", "5" to select the appropriate line width in
+points, or "n" to choose a narrow 0.5.
+
+"""
 mutable struct LSystem
     rules::Dict{String, String}
     state::Array{Int64, 1}
@@ -15,33 +80,25 @@ mutable struct LSystem
 end
 
 function string_to_array(str::String)
-    temp = Array{Int64, 1}()
-    for c in str
-        push!(temp, Int(c))
-    end
-    return temp
+    return map(x -> Int(Char(x)), collect(str))
 end
 
 function array_to_string(arr::Array)
-    temp = ""
-    for c in arr
-        temp = string(temp, Char(abs(c)))
-    end
-    return temp
+    return join(string.(Char.(collect(arr))))
 end
 
 """
-    evaluate(ls::LSystem, iterations=1)
+evaluate(ls::LSystem, iterations=1)
 
 Apply the rules in the LSystem to the initial state repeatedly. The ls.state array holds
 the result.
 
-This must be inefficient, creating a new copy of the state each time......? :(
+TODO This must be inefficient, creating a new copy of the state each time......? :(
 """
-function evaluate(ls::LSystem, iterations=1; debug=false)
+function evaluate(ls::LSystem, iterations=1)
+    next_state = Array{Int64, 1}()
     for i in 1:iterations
-        debug && println("iteration $i")
-        the_state = Array{Int64, 1}()
+        @debug println("iteration $i")
         for j in 1:length(ls.state) # each character in state
             s = string(Char(ls.state[j]))
             if haskey(ls.rules, s)
@@ -49,23 +106,25 @@ function evaluate(ls::LSystem, iterations=1; debug=false)
                 value = ls.rules[s]
                 varr = string_to_array(value)
                 if ! isempty(value)
-                    push!(the_state, varr...)
+                    push!(next_state, varr...)
                 end
             else # keep it in
-                push!(the_state, ls.state[j])
+                push!(next_state, ls.state[j])
             end
         end
-        ls.state = the_state
-        debug == true ? println(array_to_string(ls.state)) : print("")
+        @debug array_to_string(ls.state)
+        ls.state = next_state
+        next_state = Array{Int64, 1}()
     end
 end
 
 """
     render(ls::LSystem)
 
-Once the LSystem has been evaluated, the LSystem.state can be drawn.
+Once the LSystem has been evaluated, the LSystem.state can
+be drawn.
 """
-function render(ls::LSystem, t::Turtle, stepdistance, rotangle; debug=false)
+function render(ls::LSystem, t::Turtle, stepdistance, rotangle)
     counter = 1
     # set the color before we start
     Pencolor(t, t.pencolor...)
@@ -137,41 +196,54 @@ function render(ls::LSystem, t::Turtle, stepdistance, rotangle; debug=false)
 end
 
 """
-    drawLSystem(lsystem::LSystem ;
-           # optional settings:
-           forward=15,
-           turn=45,
-           iterations=3,
-           filename="/tmp/lsystem.pdf",
-           debugging=false,
-           width=1000,
-           height=1000,
-           startingpen=(0.3, 0.6, 0.8), # starting color RGB
-           startingx=0,
-           startingy=0,
-           startingorientation=0,
-           showpreview=true
+drawLSystem(lsystem::LSystem ;
+       # optional settings:
+       forward=15,
+       turn=45,
+       iterations=10,
+       filename="/tmp/lsystem.png",
+       width=800,
+       height=800,
+       startingpen=(0.3, 0.6, 0.8), # starting color RGB
+       startingx=0,
+       startingy=0,
+       startingorientation=0,
+       showpreview=true)
 
-Draw a Lindenmayer system. `lsystem` is the definition of a L-System (rules followed by initial state).
+Draw a Lindenmayer system. `lsystem` is the definition of a
+L-System (rules followed by initial state).
 
 For example:
 
-    newsystem = LSystem(Dict("F" => "AGCFCGAT", "G" => "CFAGAFC"), "F")
+```
+newsystem = LSystem(Dict("F" => "AGCFCGAT", "G" => "CFAGAFC"), "F")
+```
 
 You can change or add rules like this:
 
-    newsystem.rules["F"] = "OFO"
+```
+newsystem.rules["F"] = "OFO"
+```
+
+You can vary the line width using Turtle commands "1", "2",
+"3", "4", "5" to select the appropriate line width in
+points, or "n" to choose a narrow 0.5.
+
+To debug:
+
+```
+ENV["JULIA_DEBUG"] = Lindenmayer
+```
 """
 function drawLSystem(
       lsystem::LSystem ;
         # optional settings:
         forward=15,
         turn=45,
-        iterations=3,
-        filename="/tmp/lsystem.pdf",
-        debugging=false,
-        width=1000,
-        height=1000,
+        iterations=10,
+        filename="/tmp/lsystem.png",
+        width=800,
+        height=800,
         startingpen=(0.3, 0.6, 0.8), # starting color RGB
         startingx=0,
         startingy=0,
@@ -189,16 +261,14 @@ function drawLSystem(
     setopacity(0.9)
     fontsize(2)
     translate(startingx, startingy)
-    println("starting to evaluate LSystem...")
-    evaluate(lsystem, iterations, debug=debugging)
-    println("...evaluated LSystem, now starting to render to file $(filename)...")
-    counter = render(lsystem, t, forward, turn, debug=debugging)
-    println("...carried out $counter graphical instructions")
+    @debug "starting to evaluate LSystem..."
+    evaluate(lsystem, iterations)
+    @debug "...evaluated LSystem, now starting to render to file $(filename)..."
+    counter = render(lsystem, t, forward, turn)
+    @debug "...carried out $counter graphical instructions"
     finish()
-    println("...finished, saved in file $(filename)...")
-    if showpreview == true
-        preview()
-    end
+    @debug "...finished, saved in file $(filename)..."
+    showpreview && preview()
 end
 
 end # module
