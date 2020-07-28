@@ -1,9 +1,3 @@
-module Lindenmayer
-
-export drawLSystem, LSystem
-
-using Luxor, Colors
-
 """
 An LSystem, or Lindenmayer system, is a set of rules that
 can define recursive patterns.
@@ -14,14 +8,47 @@ You can define an L-System like this:
 koch = LSystem(Dict("F" => "F+F--F+F"), "F")
 ```
 
-This says: there's one rule; replace "F" with "F+F--F+F" for
+and draw it like this:
+
+```
+drawLSystem(lsystem, forward=30, turn=45, iterations=6)
+```
+"""
+module Lindenmayer
+
+export drawLSystem, LSystem
+
+using Luxor, Colors
+
+"""
+A Lindenmayer system is a set of rules that can define
+recursive patterns. In Lindenmayer.jl, an LSystem consists
+of:
+
+- Rules: a dictionary of transformation rules that replace a
+- character with one or more characters
+
+- Initial state: the initial state for the system (also
+- called "the Axiom")
+
+- State: the current evolved state (initially empty, added
+- when the system is evaluated)
+
+You can define an L-System like this:
+
+```
+using Lindenmayer
+koch = LSystem(Dict("F" => "F+F--F+F"), "F")
+```
+
+This says: there's just one rule; replace "F" with "F+F--F+F" for
 each iteration. And start off with an initial state
 consisting of just a single "F".
 
 To draw the LSystem we use Luxor.jl's Turtle, which
-interprets the characters in the rule as instructions. For
-example, "F" converts to "Forward()". "+" rotates clockwise,
-"-" rotates counterclockwise.
+interprets the characters in the rule as instructions or
+commands. For example, "F" converts to "Luxor.Forward()". "+"
+rotates clockwise, "-" rotates counterclockwise, and so on.
 
 So, for this Koch LSystem, the first iteration draws four
 "F" lines, and changes direction after drawing them. The
@@ -64,9 +91,59 @@ startingorientation=0,
 showpreview=true
 ```
 
-You can vary the line width using commands "1", "2",
-"3", "4", "5" to select the appropriate line width in
-points, or "n" to choose a narrow 0.5.
+The following characters are recognized in LSystem rules.
+
+F - step Forward
+G - same as F
+B - step backwards
+V - same as B
+f - half a step forward
+b - turn 180° and take half a step forward
+U - lift the pen (stop drawing)
+D - pen down (start drawing)
++ - turn by angle
+- - turn backwards by angle
+r - turn randomly by 10° 15° 30° 45° or 60°
+T - change the hue at random
+t - shift the hue by 5°
+c - randomize the saturation
+O - choose a random opacity value
+l - increase the step size by 1
+s - decrease the step size by 1
+5 - set line width to 5
+4 - set line width to 4
+3 - set line width to 3
+2 - set line width to 2
+1 - set line width to 1
+n - set line width to 0.5
+o - draw a circle with radius step/4
+q - draw a square with side length step/4
+[ - push the current state on the stack
+] - pop the current state off the stack
+* - execute a command called `Main.f(t::Luxor.turtle)`
+
+### Arbitrary graphics
+
+If you use the asterisk ("*") instruction, the `render()`
+function looks for a function called `Main.f(t::Turtle)` and
+calls it. For example, the following rule calls out to Luxor
+and draws a red star whenever an asterisk is encountered in
+the rule.
+
+```
+using Luxor
+f(t::Turtle) = begin
+    setline(0.5)
+    sethue("red")
+    star(t.xpos, t.ypos, 10, 5, 0.5, 0, :stroke)
+end
+
+drawLSystem(LSystem(Dict("F" => "5F+F--F+F*tt"), "F"),
+    startingx = -400,
+    forward=10,
+    turn=89.9,
+    iterations=6)
+```
 
 """
 mutable struct LSystem
@@ -189,6 +266,9 @@ function render(ls::LSystem, t::Turtle, stepdistance, rotangle)
             Push(t) # push
         elseif command =="]"
             Pop(t)   # pop
+        elseif command =="*"
+            Main.f(t::Luxor.Turtle)
+        else
         end
         counter += 1
     end
