@@ -1,5 +1,4 @@
-using Documenter
-using Lindenmayer
+using Documenter, Lindenmayer
 
 makedocs(
     sitename = "Lindenmayer",
