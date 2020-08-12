@@ -41,6 +41,8 @@ using Lindenmayer
 koch = LSystem(Dict("F" => "F+F--F+F"), "F")
 ```
 
+# Extended help
+
 This says: there's just one rule; replace "F" with "F+F--F+F" for
 each iteration. And start off with an initial state
 consisting of just a single "F".
@@ -49,23 +51,6 @@ To draw the LSystem we use Luxor.jl's Turtle, which
 interprets the characters in the rule as instructions or
 commands. For example, "F" converts to "Luxor.Forward()". "+"
 rotates clockwise, "-" rotates counterclockwise, and so on.
-
-So, for this Koch LSystem, the first iteration draws four
-"F" lines, and changes direction after drawing them. The
-length of the lines and the angle of the turn, and other
-starting parameters, can be specified when you evaluate the
-LSystem.
-
-To evaluate and draw the Lindenmayer system, use functions
-like this:
-
-```
-drawLSystem(lsystem)
-drawLSystem(lsystem, forward=30, turn=45, iterations=6)
-drawLSystem(lsystem, filename="/tmp/lsystem.pdf")
-```
-
-Or you could do it in a single function call:
 
 ```
 drawLSystem(LSystem(Dict("F" => "5F+F--F+Ftt"), "F"),
@@ -80,7 +65,7 @@ Keyword options for `drawLSystem` include:
 ```
 forward=15,
 turn=45,
-iterations=3,
+iterations=6,
 filename="/tmp/lsystem.pdf",
 width=1000,
 height=1000,
@@ -94,55 +79,64 @@ showpreview=true
 The following characters are recognized in LSystem rules.
 
 F - step Forward
+
 G - same as F
+
 B - step backwards
+
 V - same as B
+
 f - half a step forward
+
 b - turn 180° and take half a step forward
+
 U - lift the pen (stop drawing)
+
 D - pen down (start drawing)
-+ - turn by angle
-- - turn backwards by angle
+
+`+` - turn by angle
+
+`-` - turn backwards by angle
+
 r - turn randomly by 10° 15° 30° 45° or 60°
+
 T - change the hue at random
+
 t - shift the hue by 5°
+
 c - randomize the saturation
+
 O - choose a random opacity value
+
 l - increase the step size by 1
+
 s - decrease the step size by 1
+
 5 - set line width to 5
+
 4 - set line width to 4
+
 3 - set line width to 3
+
 2 - set line width to 2
+
 1 - set line width to 1
+
 n - set line width to 0.5
+
 o - draw a circle with radius step/4
+
 q - draw a square with side length step/4
+
+`@` - turn 5°
+
+`&` - turn -5°
+
 [ - push the current state on the stack
+
 ] - pop the current state off the stack
-* - execute a command called `Main.f(t::Luxor.turtle)`
 
-### Arbitrary graphics
-
-If you use the asterisk ("*") instruction, the `render()`
-function looks for a function called `Main.f(t::Turtle)` and
-calls it. For example, the following rule calls out to Luxor
-and draws a red star whenever an asterisk is encountered in
-the rule.
-
-```
-using Luxor
-f(t::Turtle) = begin
-    setline(0.5)
-    sethue("red")
-    star(t.xpos, t.ypos, 10, 5, 0.5, 0, :stroke)
-end
-
-drawLSystem(LSystem(Dict("F" => "5F+F--F+F*tt"), "F"),
-    startingx = -400,
-    forward=10,
-    turn=89.9,
-    iterations=6)
+`*` - execute the arbitrary passed as `asteriskfunction()`
 ```
 
 """
@@ -201,7 +195,8 @@ end
 Once the LSystem has been evaluated, the LSystem.state can
 be drawn.
 """
-function render(ls::LSystem, t::Turtle, stepdistance, rotangle)
+function render(ls::LSystem, t::Turtle, stepdistance, rotangle;
+        asteriskfunction=(t) -> ())
     counter = 1
     # set the color before we start
     Pencolor(t, t.pencolor...)
@@ -246,6 +241,14 @@ function render(ls::LSystem, t::Turtle, stepdistance, rotangle)
             stepdistance = stepdistance + 1 # larger
         elseif command =="s"
             stepdistance = stepdistance - 1 # smaller
+        elseif command =="9"
+            Penwidth(t, 9)
+        elseif command =="8"
+            Penwidth(t, 8)
+        elseif command =="7"
+            Penwidth(t, 7)
+        elseif command =="6"
+            Penwidth(t, 6)
         elseif command =="5"
             Penwidth(t, 5)
         elseif command =="4"
@@ -258,6 +261,10 @@ function render(ls::LSystem, t::Turtle, stepdistance, rotangle)
             Penwidth(t, 1)
         elseif command =="n"
             Penwidth(t, 0.5)
+        elseif command =="@"
+            Turn(t, 5)
+        elseif command =="&"
+            Turn(t, -5)
         elseif command =="o"
             Circle(t, stepdistance/4)
         elseif command =="q"
@@ -266,9 +273,8 @@ function render(ls::LSystem, t::Turtle, stepdistance, rotangle)
             Push(t) # push
         elseif command =="]"
             Pop(t)   # pop
-        elseif command =="*"
-            Main.f(t::Luxor.Turtle)
-        else
+        elseif command == "*"
+            asteriskfunction(t)
         end
         counter += 1
     end
@@ -276,19 +282,21 @@ function render(ls::LSystem, t::Turtle, stepdistance, rotangle)
 end
 
 """
-drawLSystem(lsystem::LSystem ;
-       # optional settings:
-       forward=15,
-       turn=45,
-       iterations=10,
-       filename="/tmp/lsystem.png",
-       width=800,
-       height=800,
-       startingpen=(0.3, 0.6, 0.8), # starting color RGB
-       startingx=0,
-       startingy=0,
-       startingorientation=0,
-       showpreview=true)
+    drawLSystem(lsystem::LSystem ;
+           # optional settings:
+           forward=15,
+           turn=45,
+           iterations=10,
+           filename="lsystem.png",
+           width=800,
+           height=800,
+           startingpen=(0.3, 0.6, 0.8), # starting color RGB
+           startingx=0,
+           startingy=0,
+           startingorientation=0,
+           showpreview=true,
+           backgroundcolor = colorant"black",
+           asteriskfunction = (t::Luxor.Turtle) -> ())
 
 Draw a Lindenmayer system. `lsystem` is the definition of a
 L-System (rules followed by initial state).
@@ -305,37 +313,32 @@ You can change or add rules like this:
 newsystem.rules["F"] = "OFO"
 ```
 
-You can vary the line width using Turtle commands "1", "2",
-"3", "4", "5" to select the appropriate line width in
-points, or "n" to choose a narrow 0.5.
+You can vary the line width using Turtle commands "1" ... "9" to select the appropriate line width (in
+points), or "n" to choose a narrow 0.5.
 
-To debug:
-
-```
-ENV["JULIA_DEBUG"] = Lindenmayer
-```
 """
-function drawLSystem(
-      lsystem::LSystem ;
-        # optional settings:
+function drawLSystem(lsystem::LSystem;
         forward=15,
         turn=45,
-        iterations=10,
-        filename="/tmp/lsystem.png",
+        iterations=6,
+        filename="lsystem.png",
         width=800,
         height=800,
         startingpen=(0.3, 0.6, 0.8), # starting color RGB
         startingx=0,
         startingy=0,
         startingorientation=0, # -pi/2 means turtle points North on the page (although that's negative y...)
-        showpreview=true
+        showpreview=true,
+        backgroundcolor = colorant"black",
+        asteriskfunction = (t::Turtle) -> ()
         )
+
     # use the stored initial state, because the state will grow
     lsystem.state = lsystem.initial_state
     t = Turtle(0, 0, true, startingorientation, startingpen)
     Drawing(width, height, "$filename")
     origin()
-    background("black")
+    background(backgroundcolor)
     setline(1)
     setlinecap("round")
     setopacity(0.9)
@@ -344,11 +347,15 @@ function drawLSystem(
     @debug "starting to evaluate LSystem..."
     evaluate(lsystem, iterations)
     @debug "...evaluated LSystem, now starting to render to file $(filename)..."
-    counter = render(lsystem, t, forward, turn)
-    @debug "...carried out $counter graphical instructions"
+    counter = render(lsystem, t, forward, turn, asteriskfunction = asteriskfunction)
+    @debug "...executed $counter graphical instructions"
     finish()
-    @debug "...finished, saved in file $(filename)..."
-    showpreview && preview()
+    @debug "...saved in file $(filename)..."
+    if showpreview
+        return Luxor.CURRENTDRAWING[1]
+    else
+        return (commands = counter, file = filename)
+    end
 end
 
 end # module
