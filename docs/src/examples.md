@@ -17,9 +17,8 @@ drawLSystem(simple,
    showpreview = false)
 ```
 
-```@raw html
-<img src="assets/figures/simple.png" alt="simple" title="Simple" width="800" />
-```
+
+![](assets/figures/simple.png)
 
 ## Koch
 
@@ -41,9 +40,8 @@ drawLSystem(koch,
    showpreview = false)
 ```
 
-```@raw html
-<img src="assets/figures/koch.png" alt="koch" title="Koch" width="800" />
-```
+
+![](assets/figures/koch.png)
 
 ```
 koch = LSystem(Dict("F" => "F+F--F+F"), "F") # 4 # 60 degrees
@@ -63,9 +61,7 @@ koch_snowflake = LSystem(Dict("F" => "F+F--F+F"), "F-F-F")
 quadratic_Koch = LSystem(Dict("F" => "tF-F+F+FFF-F-F+F"), "4F+F+F+F")
 ```
 
-```@raw html
-<img src="assets/figures/quadratic_koch.png" alt="quadratic_koch" title="Quadratic Koch" width="800" />
-```
+![](assets/figures/quadratic_koch.png)
 
 ## Peano
 
@@ -82,9 +78,7 @@ drawLSystem(peano,
    showpreview = false)
 ```
 
-```@raw html
-<img src="assets/figures/peano.png" alt="peano" title="Peano" width="800" />
-```
+![](assets/figures/peano.png)
 
 ## Peano Gosper
 
@@ -108,9 +102,7 @@ drawLSystem(peano_gosper,
    showpreview         = false)
 ```
 
-```@raw html
-<img src="assets/figures/peano-gosper.png" alt="peano-gosper" title="Peano-Gosper" width="800" />
-```
+![](assets/figures/peano-gosper.png)
 
 ## 32 segments
 
@@ -127,9 +119,7 @@ drawLSystem(thirty_two_segment,
    showpreview=false)
 ```
 
-```@raw html
-<img src="assets/figures/32segments.png" alt="32segments" title="32 segments" width="800" />
-```
+![](assets/figures/32segments.png)
 
 ## Sierpinski
 
@@ -149,9 +139,7 @@ drawLSystem(sierpinski_triangle,
    showpreview=false)
 ```
 
-```@raw html
-<img src="assets/figures/sierpinski-triangle.png" alt="sierpinski" title="Sierpinski" width="800" />
-```
+![](assets/figures/sierpinski-triangle.png)
 
 ```
 square_curve = LSystem(Dict(
@@ -175,9 +163,7 @@ drawLSystem(dragon_curve,
    showpreview = false)
 ```
 
-```@raw html
-<img src="assets/figures/dragon_curve.png" alt="dragon_curve" title="Dragon Curve" width="800" />
-```
+![](assets/figures/dragon_curve.png)
 
 ## Hilbert curves
 
@@ -198,9 +184,7 @@ drawLSystem(hilbert_curve,
    showpreview = false)
 ```
 
-```@raw html
-<img src="assets/figures/hilbert_curve.png" alt="hilbert_curve" title="Hilbert Curve" width="800" />
-```
+![](assets/figures/hilbert_curve.png)
 
 ```
 hilbert = LSystem(Dict(
@@ -218,9 +202,7 @@ drawLSystem(hilbert,
    showpreview = false)
 ```
 
-```@raw html
-<img src="assets/figures/hilbert.png" alt="hilbert" title="Hilbert" width="800" />
-```
+![](assets/figures/hilbert.png)
 
 ```
 hilbert_curve2 = LSystem(Dict(
@@ -237,9 +219,8 @@ drawLSystem(hilbert_curve2,
    filename    = "hilbert_curve2.pdf",
    showpreview = false)
 ```
-```@raw html
-<img src="assets/figures/hilbert_curve2.png" alt="hilbert_curve2" title="Hilbert Curve 2" width="800" />
-```
+
+![](assets/figures/hilbert_curve2.png)
 
 ## Plants
 
@@ -260,9 +241,7 @@ drawLSystem(plant,
    showpreview         = false)
 ```
 
-```@raw html
-<img src="assets/figures/plant.png" alt="plant" title="Plant" width="800" />
-```
+![](assets/figures/plant.png)
 
 ```
 plant1 = LSystem(Dict(
@@ -282,9 +261,7 @@ drawLSystem(plant1,
    showpreview         = false)
 ```
 
-```@raw html
-<img src="assets/figures/plant1.png" alt="plant1" title="Plant1" width="800" />
-```
+![](assets/figures/plant1.png)
 
 ```
 branch  = LSystem(Dict(
@@ -303,9 +280,7 @@ drawLSystem(branch,
    showpreview         = false)
 ```
 
-```@raw html
-<img src="assets/figures/branch.png" alt="branch" title="Branch" width="800" />```
-```
+![](assets/figures/branch.png)
 
 ## Penrose tiling
 
@@ -331,6 +306,4 @@ drawLSystem(penrose,
    showpreview         = false)
 ```
 
-```@raw html
-<img src="assets/figures/penrose.png" alt="penrose" title="Penrose" width="800" />
-```
+![](assets/figures/penrose.png)
