@@ -36,10 +36,10 @@ drawLSystem(plant,
 
 
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
-[docs-latest-url]: http://juliagraphics.github.io/Lindenmayer.jl/latest/
+[docs-latest-url]: http://cormullion.github.io/Lindenmayer.jl/latest/
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-stable-url]: http://juliagraphics.github.io/Lindenmayer.jl/stable/
+[docs-stable-url]: http://cormullion.github.io/Lindenmayer.jl/stable/
 
 [pkgeval-link]: http://pkg.julialang.org/?pkg=Lindenmayer
 

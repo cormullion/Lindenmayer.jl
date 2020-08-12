@@ -3,11 +3,11 @@ using Lindenmayer
 
 makedocs(
     sitename = "Lindenmayer",
-    modules = [Lindenmayer],
-    format = Documenter.HTML(prettyurls = get(ENV, "CI", nothing) == "true"),
+    modules  = [Lindenmayer],
+    format   = Documenter.HTML(prettyurls = get(ENV, "CI", nothing) == "true"),
     pages    = Any[
         "Lindenmayer.jl" => "index.md",
-        "Examples" =>    "examples.md",
+        "Examples"       => "examples.md",
         ]
 )
 
@@ -15,6 +15,6 @@ makedocs(
 # See "Hosting Documentation" and deploydocs() in the Documenter manual
 # for more information.
 deploydocs(
-    repo = "github.com/cormullion/Lindenmayer.jl.git",
+    repo   = "github.com/cormullion/Lindenmayer.jl.git",
     target = "build"
 )
