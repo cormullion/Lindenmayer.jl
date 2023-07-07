@@ -111,7 +111,7 @@ hilbert_curve = LSystem(Dict(
 
 To evaluate and draw the LSystem, use `drawLSystem()`.
 
-```
+```julia
 drawLSystem(LSystem(Dict("F" => "5F+F--F+Ftt"), "F"),
     startingx = -400,
     forward = 4,
@@ -121,7 +121,7 @@ drawLSystem(LSystem(Dict("F" => "5F+F--F+Ftt"), "F"),
 
 Keyword options and defaults for `drawLSystem` are:
 
-```
+```julia
 forward              = 15,
 turn                 = 45,
 iterations           = 10,

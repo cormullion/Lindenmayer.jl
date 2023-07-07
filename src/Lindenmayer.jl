@@ -336,7 +336,7 @@ function drawLSystem(lsystem::LSystem;
     # use the stored initial state, because the state will grow
     lsystem.state = lsystem.initial_state
     t = Turtle(0, 0, true, startingorientation, startingpen)
-    Drawing(width, height, "$filename")
+    d = Drawing(width, height, "$filename")
     origin()
     background(backgroundcolor)
     setline(1)
@@ -352,7 +352,7 @@ function drawLSystem(lsystem::LSystem;
     finish()
     @debug "...saved in file $(filename)..."
     if showpreview
-        return Luxor.CURRENTDRAWING[1]
+        return d
     else
         return (commands = counter, file = filename)
     end

@@ -43,8 +43,8 @@ drawLSystem(plant,
 
 [pkgeval-link]: http://pkg.julialang.org/?pkg=Lindenmayer
 
-[travis-img]: https://travis-ci.org/cormullion/Lindenmayer.jl.svg?branch=master
-[travis-url]: https://travis-ci.org/cormullion/Lindenmayer.jl
+[travis-img]: https://travis-ci.com/cormullion/Lindenmayer.jl.svg?branch=master
+[travis-url]: https://travis-ci.com/cormullion/Lindenmayer.jl
 
 [appvey-img]: https://ci.appveyor.com/api/projects/status/jfa9e54lv92rqd3m?svg=true
 [appvey-url]: https://ci.appveyor.com/project/cormullion/lindenmayer-jl/branch/master

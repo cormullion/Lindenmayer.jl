@@ -1,7 +1,7 @@
 name = "Lindenmayer"
 uuid = "d9db2020-d13e-4bf8-b13e-b12a3214b5ef"
 authors = ["cormullion <cormullion@mac.com>"]
-version = "0.2.0"
+version = "0.3.0"
 
 [deps]
 Luxor = "ae8d54c2-7ccd-5906-9d76-62fc9837b5bc"
@@ -12,9 +12,9 @@ Luxor = "ae8d54c2-7ccd-5906-9d76-62fc9837b5bc"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test", "Luxor"]
+test = ["Test", "Luxor", "Lindenmayer"]
 
 [compat]
-julia = "1"
-Luxor = "^2"
+julia = "1.6"
+Luxor = "3"
 Colors = "0.9.0, 0.10.0, 0.11.0, 0.12.0"
