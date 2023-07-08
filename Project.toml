@@ -12,7 +12,7 @@ Luxor = "ae8d54c2-7ccd-5906-9d76-62fc9837b5bc"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test", "Luxor", "Lindenmayer"]
+test = ["Test", "Luxor"]
 
 [compat]
 julia = "1.6"

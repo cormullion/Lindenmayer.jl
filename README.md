@@ -1,7 +1,7 @@
 
 | **Documentation**                       | **Build Status**                          | **Code Coverage**               |
 |:---------------------------------------:|:-----------------------------------------:|:-------------------------------:|
-| [![][docs-stable-img]][docs-stable-url] | [![Build Status][travis-img]][travis-url] | [![][codecov-img]][codecov-url] |
+| [![][docs-stable-img]][docs-stable-url] | [![Build Status][ci-img]][ci-url]         | [![][codecov-img]][codecov-url] |
 | [![][docs-dev-img]][docs-dev-url]       | [![Build Status][appvey-img]][appvey-url] |                                 |
 
 <img src="docs/src/assets/figures/wordmark.svg" alt="plant" title="Plant" width="800" />
