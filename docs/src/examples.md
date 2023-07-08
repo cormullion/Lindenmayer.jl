@@ -44,7 +44,7 @@ drawLSystem(koch,
 ![](assets/figures/koch.png)
 
 ```
-koch = LSystem(Dict("F" => "F+F--F+F"), "F") # 4 # 60 degrees
+quadratic_Koch = LSystem(Dict("F" => "F+F--F+F"), "F") # 4 # 60 degrees
 drawLSystem(quadratic_Koch,
    forward     = 10,
    iterations  = 2,

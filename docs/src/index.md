@@ -234,3 +234,8 @@ ENV["JULIA_DEBUG"] = Lindenmayer
 LSystem
 drawLSystem
 ```
+
+```@example
+using Dates # hide
+println("Documentation built $(Dates.now()) with Julia $(VERSION) on $(Sys.KERNEL)") # hide
+```
