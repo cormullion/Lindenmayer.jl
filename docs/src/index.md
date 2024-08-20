@@ -299,13 +299,6 @@ To stop debugging:
 ENV["JULIA_DEBUG"] = nothing
 ```
 
-```@docs
-LSystem
-drawLSystem
-Lindenmayer.render
-Lindenmayer.evaluate
-```
-
 ```@example
 using Dates # hide
 println("Documentation built $(Dates.now()) with Julia $(VERSION) on $(Sys.KERNEL)") # hide

@@ -339,7 +339,7 @@ uuid = "38a345b3-de98-5d2b-a5d3-14cd9215e700"
 version = "2.40.1+0"
 
 [[deps.Lindenmayer]]
-deps = ["Colors", "Luxor", "OrderedCollections", "Reexport"]
+deps = ["Colors", "Luxor", "OrderedCollections"]
 path = "/Users/pete/.julia/dev/Lindenmayer"
 uuid = "d9db2020-d13e-4bf8-b13e-b12a3214b5ef"
 version = "1.0.0"
