@@ -6,7 +6,9 @@
 
 <img src="docs/src/assets/figures/wordmark.svg" alt="plant" title="Plant" width="800" />
 
-# Lindenmayer (L-systems)
+# Lindenmayer (LSystems)
+
+This package builds and draws Lindenmayer systems (LSystems). It uses Luxor.jl to draw the graphics.
 
 L-systems were introduced and developed in 1968 by Aristid Lindenmayer, a
 Hungarian theoretical biologist and botanist at the University of Utrecht.
@@ -17,10 +19,10 @@ self-similar fractals such as iterated function systems.
 
 <img src="docs/src/assets/figures/plant.png" alt="plant" title="Plant" width="800" />
 
-```
+```julia
 using Lindenmayer
 
-plant  = LSystem(Dict("F" => "F[-F]cF[+F][F]"), "F")
+plant  = LSystem(["F" => "F[-F]cF[+F][F]"], "F")
 
 drawLSystem(plant,
     forward              = 6,
@@ -33,7 +35,6 @@ drawLSystem(plant,
     filename             = "plant.png")
 
 ```
-
 
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
 [docs-dev-url]: https://cormullion.github.io/Lindenmayer.jl/dev

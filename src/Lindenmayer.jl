@@ -5,55 +5,56 @@ can define recursive patterns.
 You can define an L-System like this:
 
 ```
-koch = LSystem(Dict("F" => "F+F--F+F"), "F")
+koch = LSystem(["F" => "F+F--F+F"], "F")
 ```
 
-and draw it like this:
+and use Luxor to draw it like this:
 
 ```
-drawLSystem(lsystem, forward=30, turn=45, iterations=6)
+drawLSystem(koch, forward=30, turn=45, iterations=6)
 ```
+
+See `help?> LSystem` and `help?> ?>LSystem` for more.
 """
 module Lindenmayer
 
 export drawLSystem, LSystem
 
-using Luxor, Colors
+using Luxor
+using OrderedCollections
+using Colors
 
 """
-A Lindenmayer system is a set of rules that can define
-recursive patterns. In Lindenmayer.jl, an LSystem consists
+A Lindenmayer system is a set of rules that can build
+recursive patterns. In Lindenmayer.jl, an LSystem structure consists
 of:
 
-- Rules: a dictionary of transformation rules that replace a
-- character with one or more characters
+- Rules: a set of search and replace strings
 
-- Initial state: the initial state for the system (also
-- called "the Axiom")
+- Seed: a string that defines the initial state for the system
 
-- State: the current evolved state (initially empty, added
-- when the system is evaluated)
+- State: the current state (initially empty, added when the system is evaluated)
 
 You can define an L-System like this:
 
 ```
 using Lindenmayer
-koch = LSystem(Dict("F" => "F+F--F+F"), "F")
+koch = LSystem(["F" => "F+F--F+F"], "F")
 ```
+
+This says: there's just one rule; search for "F" and replace with "F+F--F+F" for
+each iteration. The starting "seed" is the initial state
+consisting of just a single "F".
 
 # Extended help
 
-This says: there's just one rule; replace "F" with "F+F--F+F" for
-each iteration. And start off with an initial state
-consisting of just a single "F".
-
 To draw the LSystem we use Luxor.jl's Turtle, which
 interprets the characters in the rule as instructions or
-commands. For example, "F" converts to "Luxor.Forward()". "+"
+commands. For example, "F" converts to `Luxor.Forward()``, "+"
 rotates clockwise, "-" rotates counterclockwise, and so on.
 
 ```
-drawLSystem(LSystem(Dict("F" => "5F+F--F+Ftt"), "F"),
+drawLSystem(LSystem(["F" => "5F+F--F+Ftt"], "F"),
     startingx = -400,
     forward = 4,
     turn = 80,
@@ -136,47 +137,63 @@ q - draw a square with side length step/4
 
 ] - pop the current state off the stack
 
-`*` - execute the arbitrary passed as `asteriskfunction()`
+`*` - execute the arbitrary function passed as `asteriskfunction()`
 ```
+
 
 """
 mutable struct LSystem
-    rules::Dict{String, String}
-    state::Array{Int64, 1}
-    initial_state::Array{Int64, 1}
-    function LSystem(rules, state_as_string)
-        newlsystem = new(rules, string_to_array(state_as_string), string_to_array(state_as_string))
-        return newlsystem
+    rules::OrderedDict{String,String}
+    state::Array{UInt16,1}
+    initial_state::Array{UInt16,1}
+end
+
+function LSystem(rules::Dict, state_as_string)
+    return LSystem(rules,
+        string_to_array(state_as_string),
+        string_to_array(state_as_string))
+end
+
+LSystem(rules::Tuple, state_as_string) =
+    begin
+        LSystem(OrderedDict(rules),
+        string_to_array(state_as_string),
+        string_to_array(state_as_string))
     end
+
+# for compatibility with older versions
+LSystem(rules::Vector{Pair{String,String}}, state_as_string) =
+    begin
+        LSystem(OrderedDict(rules),
+            string_to_array(state_as_string),
+            string_to_array(state_as_string))
+    end
+
+    function string_to_array(str::String)
+    return [Int(Char(x)) for x in collect(str)]
 end
 
-function string_to_array(str::String)
-    return map(x -> Int(Char(x)), collect(str))
-end
-
-function array_to_string(arr::Array)
+function array_to_string(arr::Array{UInt16,1})
     return join(string.(Char.(collect(arr))))
 end
 
 """
-evaluate(ls::LSystem, iterations=1)
+    evaluate(ls::LSystem, iterations=1)
 
 Apply the rules in the LSystem to the initial state repeatedly. The ls.state array holds
 the result.
-
-TODO This must be inefficient, creating a new copy of the state each time......? :(
 """
 function evaluate(ls::LSystem, iterations=1)
-    next_state = Array{Int64, 1}()
+    next_state = Array{UInt16, 1}()
     for i in 1:iterations
-        @debug println("iteration $i")
+        @debug "iteration $i"
         for j in 1:length(ls.state) # each character in state
             s = string(Char(ls.state[j]))
             if haskey(ls.rules, s)
                 #  replace it using the rule
                 value = ls.rules[s]
-                varr = string_to_array(value)
                 if ! isempty(value)
+                    varr = string_to_array(value)
                     push!(next_state, varr...)
                 end
             else # keep it in
@@ -185,15 +202,24 @@ function evaluate(ls::LSystem, iterations=1)
         end
         @debug array_to_string(ls.state)
         ls.state = next_state
-        next_state = Array{Int64, 1}()
+        next_state = Array{UInt16, 1}()
     end
 end
 
 """
-    render(ls::LSystem)
+    render(ls::LSystem, t::Turtle, stepdistance, rotangle;
+        asteriskfunction=(t) -> ())
 
-Once the LSystem has been evaluated, the LSystem.state can
+Once the LSystem has been evaluated, the state (in `LSystem.state`) can
 be drawn.
+
+- `ls` is the LSystem to be rendered
+
+- `t` is a Luxor turtle
+
+- `stepdistance` is the Forward distance
+
+- `rotangle` is the Turn angle
 """
 function render(ls::LSystem, t::Turtle, stepdistance, rotangle;
         asteriskfunction=(t) -> ())
@@ -336,7 +362,11 @@ function drawLSystem(lsystem::LSystem;
     # use the stored initial state, because the state will grow
     lsystem.state = lsystem.initial_state
     t = Turtle(0, 0, true, startingorientation, startingpen)
-    d = Drawing(width, height, "$filename")
+    if filename isa String 
+        d = Drawing(width, height, "$filename")
+    else
+        d = Drawing(width, height, filename)
+    end
     origin()
     background(backgroundcolor)
     setline(1)

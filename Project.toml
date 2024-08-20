@@ -1,11 +1,19 @@
 name = "Lindenmayer"
 uuid = "d9db2020-d13e-4bf8-b13e-b12a3214b5ef"
 authors = ["cormullion <cormullion@mac.com>"]
-version = "0.3.0"
+version = "1.0.0"
 
 [deps]
-Luxor = "ae8d54c2-7ccd-5906-9d76-62fc9837b5bc"
 Colors = "5ae59095-9a9b-59fe-a467-6f913c188581"
+Luxor = "ae8d54c2-7ccd-5906-9d76-62fc9837b5bc"
+OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
+Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
+
+[compat]
+Colors = "0.9, 0.10, 0.11, 0.12"
+Luxor = "3, 4"
+OrderedCollections = "1.6"
+julia = "1.9"
 
 [extras]
 Luxor = "ae8d54c2-7ccd-5906-9d76-62fc9837b5bc"
@@ -13,8 +21,3 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
 test = ["Test", "Luxor"]
-
-[compat]
-julia = "1.6"
-Luxor = "3"
-Colors = "0.9.0, 0.10.0, 0.11.0, 0.12.0"
