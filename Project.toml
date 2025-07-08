@@ -1,17 +1,19 @@
 name = "Lindenmayer"
 uuid = "d9db2020-d13e-4bf8-b13e-b12a3214b5ef"
 authors = ["cormullion <cormullion@mac.com>"]
-version = "1.0.0"
+version = "1.1.0"
 
 [deps]
+ColorSchemes = "35d6a980-a343-548e-a6ea-1d62b119f2f4"
 Colors = "5ae59095-9a9b-59fe-a467-6f913c188581"
 Luxor = "ae8d54c2-7ccd-5906-9d76-62fc9837b5bc"
 OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
 
 [compat]
-Colors = "0.9, 0.10, 0.11, 0.12"
-Luxor = "3, 4"
-OrderedCollections = "1.6"
+ColorSchemes = "3.30"
+Colors = "0.9, 0.10, 0.11, 0.12, 0.13"
+Luxor = "4"
+OrderedCollections = "1.8"
 julia = "1.9"
 
 [extras]
