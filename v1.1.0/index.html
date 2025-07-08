@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Lindenmayer.jl · Lindenmayer</title><meta name="title" content="Lindenmayer.jl · Lindenmayer"/><meta property="og:title" content="Lindenmayer.jl · Lindenmayer"/><meta property="twitter:title" content="Lindenmayer.jl · Lindenmayer"/><meta name="description" content="Documentation for Lindenmayer."/><meta property="og:description" content="Documentation for Lindenmayer."/><meta property="twitter:description" content="Documentation for Lindenmayer."/><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="search_index.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script><link href="assets/extra.css" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href><img src="assets/logo.svg" alt="Lindenmayer logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href>Lindenmayer</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Lindenmayer.jl</a><ul class="internal"><li><a class="tocitem" href="#Introduction"><span>Introduction</span></a></li><li><a class="tocitem" href="#Drawing-the-LSystem"><span>Drawing the LSystem</span></a></li><li><a class="tocitem" href="#Drawing-LSystems"><span>Drawing LSystems</span></a></li><li><a class="tocitem" href="#Rules"><span>Rules</span></a></li><li><a class="tocitem" href="#Arbitrary-functions"><span>Arbitrary functions</span></a></li><li><a class="tocitem" href="#Custom-evaluations"><span>Custom evaluations</span></a></li><li><a class="tocitem" href="#Debugging"><span>Debugging</span></a></li></ul></li><li><a class="tocitem" href="examples/">Examples</a></li><li><a class="tocitem" href="api/">Function reference</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Lindenmayer.jl</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Lindenmayer.jl</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/cormullion/Lindenmayer.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/cormullion/Lindenmayer.jl/blob/master/docs/src/index.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Lindenmayer.jl"><a class="docs-heading-anchor" href="#Lindenmayer.jl">Lindenmayer.jl</a><a id="Lindenmayer.jl-1"></a><a class="docs-heading-anchor-permalink" href="#Lindenmayer.jl" title="Permalink"></a></h1><p>This is a simple package that can make LSystems. It uses Luxor.jl to draw them.</p><h2 id="Introduction"><a class="docs-heading-anchor" href="#Introduction">Introduction</a><a id="Introduction-1"></a><a class="docs-heading-anchor-permalink" href="#Introduction" title="Permalink"></a></h2><p>An LSystem, or Lindenmayer system, is a set of rules that can define recursive patterns.</p><p>These were introduced and developed in 1968 by Aristid Lindenmayer, a Hungarian theoretical biologist and botanist at the University of Utrecht. Lindenmayer used LSystems to describe the behaviour of plant cells and to model the growth processes of plant development. LSystems have also been used to model the morphology of a variety of organisms and can be used to generate self-similar fractals such as iterated function systems.</p><p>In Lindenmayer.jl you can define an LSystem like this:</p><pre><code class="language-julia hljs">sierpinski_triangle = LSystem([
+        &quot;F&quot; =&gt; &quot;G+F+Gt&quot;,
+        &quot;G&quot; =&gt; &quot;F-G-F&quot;],
+    &quot;G&quot;)</code></pre><p>This one has two rules, and an initial state. You can draw it using the <code>drawLSystem()</code> function.</p><p>For example:</p><pre><code class="language-julia hljs">using Lindenmayer
+sierpinski_triangle  = LSystem([
+        &quot;F&quot; =&gt; &quot;G+F+Gt&quot;,
+        &quot;G&quot; =&gt; &quot;7F-G-F&quot;
+    ],
+    &quot;G&quot;)
+
+drawLSystem(sierpinski_triangle,
+    forward     = 10,
+    turn        = 60,
+    iterations  = 6,
+    startingx   = -300,
+    startingy   = -300,
+    filename    = :svg)</code></pre><img src="index-b2e0fc47.svg" alt="Example block output"/><p>In Lindenmayer.jl, an LSystem consists of:</p><ul><li><p>Rules: one or more search and replace rules in a <code>Vector</code>. Each rule replaces a single-character string with a string of one or more characters</p></li><li><p>Initial state: the initial seed state for the system (sometimes called &quot;the Axiom&quot;)</p></li><li><p>State: the current evolved state (initially empty, added when the system is evaluated)</p></li></ul><p>The <code>sierpinski_triangle</code> LSystem has two rules. The first rule says replace &quot;F&quot; with &quot;G+F+Gt&quot; at every iteration. Rule 2 says replace &quot;G&quot; with &quot;F-G-F&quot; at every iteration. We start off with an initial state consisting of just a single &quot;G&quot;.</p><p>So the system State grows like this:</p><pre><code class="nohighlight hljs">1: G
+2: (F-G-F) # after applying rule 2
+3: (G+F+G)-(F-G-F)-(G+F+G) # after applying rule 1
+4: (F-G-F)+(G+F+G)+(F-G-F)-(G+F+G)-(F-G-F)-(G+F+G)-(F-G-F)+(G+F+G)+(F-G-F)
+5: (G+F+G)-(F-G-F)-(G+F+G)+(F-G-F)+(G+F+G)+(F-G-F)+(G+F+G)-(F-G-F)-(G+F+G)-(F-G-F)+(G+F+G)+(F-G-F)-(G+F+G)-(F-G-F)-(G+F+G)-(F-G-F)+(G+F+G)+(F-G-F)-(G+F+G)-(F-G-F)-(G+F+G)+(F-G-F)+(G+F+G)+(F-G-F)+(G+F+G)-(F-G-F)-(G+F+G)
+6: (F-G-F)+(G+F+G)+(F-G-F)-(G+F+G)-(F-G-F)-(G+F+G)-(F-G-F)+(G+F+G)+(F-G-F)+(G+F+G)-(F-G-F)-(G+F+G)+(F-G-F)+(G+F+G)+(F-G-F)+(G+F+G)-(F-G-F)-(G+F+G)+(F-G-F)+(G+F+G)+(F-G-F)-(G+F+G)-(F-G-F)-(G+F+G)-(F-G-F)+(G+F+G)+(F-G-F)-(G+F+G)-(F-G-F)-(G+F+G)+(F-G-F)+(G+F+G)+(F-G-F)+(G+F+G)-(F-G-F)-(G+F+G)-(F-G-F)+(G+F+G)+(F-G-F)-(G+F+G)-(F-G-F)-(G+F+G)-(F-G-F)+(G+F+G)+(F-G-F)-(G+F+G)-(F-G-F)-(G+F+G)+(F-G-F)+(G+F+G)+(F-G-F)+(G+F+G)-(F-G-F)-(G+F+G)-(F-G-F)+(G+F+G)+(F-G-F)-(G+F+G)-(F-G-F)-(G+F+G)-(F-G-F)+(G+F+G)+(F-G-F)+(G+F+G)-(F-G-F)-(G+F+G)+(F-G-F)+(G+F+G)+(F-G-F)+(G+F+G)-F-G-F-(G+F+G)+F-G-F+(G+F+G)+F-G-F-(G+F+G)-F-G-F-(G+F+G)-F-G-F+(G+F+G)+F-G-F... etc.</code></pre><p>and, afer only a few iterations, the state consists of thousands of instructions.</p><h2 id="Drawing-the-LSystem"><a class="docs-heading-anchor" href="#Drawing-the-LSystem">Drawing the LSystem</a><a id="Drawing-the-LSystem-1"></a><a class="docs-heading-anchor-permalink" href="#Drawing-the-LSystem" title="Permalink"></a></h2><p>Use <code>drawLSystem()</code> to evaluate and draw the LSystem. The characters in the rule are interpreted as instructions to control a Luxor.jl turtle.</p><ul><li><p>&quot;F&quot; and &quot;G&quot; both convert to <code>Luxor.Forward()</code></p></li><li><p>&quot;+&quot; rotates the turtle clockwise</p></li><li><p>&quot;-&quot; rotates the turtle counterclockwise</p></li><li><p>&quot;5&quot; specifies a 5 pt thick line</p></li><li><p>&quot;t&quot; shifts the pen&#39;s hue color by 5°</p></li></ul><p>The actual distance moved by &quot;F&quot; and &quot;G&quot; instructions, the angle of the turn, and other starting parameters, are specified when you evaluate the LSystem.</p><p>The following characters are turtle-ese, referring to existing instructions: </p><pre><code class="nohighlight hljs">&amp; * + - 1 2 3 4 5 6 7 8 9 @ 
+B D F G O T U V [ ] 
+b c f l n o q r s t</code></pre><p>You can use the remaining letters as placeholders or variables as you like. For example, the following Hilbert LSystem uses L and R, which don&#39;t do anything on their own - but they do expand to use plenty of &quot;F&quot;, &quot;+&quot;, and &quot;-&quot; rules.</p><pre><code class="nohighlight hljs">hilbert_curve = LSystem([
+   &quot;L&quot; =&gt; &quot;+RF-LFL-FR+&quot;,
+   &quot;R&quot; =&gt; &quot;-LF+RFR+FL-&quot;
+   ],
+   &quot;3L&quot;) # 90°</code></pre><h2 id="Drawing-LSystems"><a class="docs-heading-anchor" href="#Drawing-LSystems">Drawing LSystems</a><a id="Drawing-LSystems-1"></a><a class="docs-heading-anchor-permalink" href="#Drawing-LSystems" title="Permalink"></a></h2><p>To evaluate and draw the LSystem, use <code>drawLSystem()</code>. </p><pre><code class="language-julia hljs">drawLSystem(LSystem([&quot;F&quot; =&gt; &quot;5F+F--F+Ftt&quot;], &quot;F&quot;),
+    startingx = -400,
+    forward = 4,
+    turn = 80,
+    iterations = 6)</code></pre><p>Keyword options and defaults for <code>drawLSystem</code> are:</p><pre><code class="language-julia hljs">forward              = 15,
+turn                 = 45,
+iterations           = 10,
+filename             = &quot;/tmp/lsystem.png&quot;,
+width                = 800,
+height               = 800,
+startingpen          = (0.3, 0.6, 0.8), # starting color in RGB
+startingx            = 0,
+startingy            = 0,
+startingorientation  = 0,
+backgroundcolor      = colorant&quot;black&quot;,
+asteriskfunction     = (t::Turtle) -&gt; (),
+showpreview          = true</code></pre><h2 id="Rules"><a class="docs-heading-anchor" href="#Rules">Rules</a><a id="Rules-1"></a><a class="docs-heading-anchor-permalink" href="#Rules" title="Permalink"></a></h2><p>The following characters are recognized in LSystem rules.</p><table><tr><th style="text-align: right">Character in rule</th><th style="text-align: right">Function</th></tr><tr><td style="text-align: right">-</td><td style="text-align: right">turn backwards by angle</td></tr><tr><td style="text-align: right">[</td><td style="text-align: right">push the current state on the stack</td></tr><tr><td style="text-align: right">]</td><td style="text-align: right">pop the current state off the stack</td></tr><tr><td style="text-align: right">@</td><td style="text-align: right">turn 5°</td></tr><tr><td style="text-align: right">*</td><td style="text-align: right">execute the supplied function</td></tr><tr><td style="text-align: right">&amp;</td><td style="text-align: right">turn -5°</td></tr><tr><td style="text-align: right">+</td><td style="text-align: right">turn by angle (degrees!)</td></tr><tr><td style="text-align: right">1</td><td style="text-align: right">set line width to 1</td></tr><tr><td style="text-align: right">2</td><td style="text-align: right">set line width to 2</td></tr><tr><td style="text-align: right">3</td><td style="text-align: right">set line width to 3</td></tr><tr><td style="text-align: right">4</td><td style="text-align: right">set line width to 4</td></tr><tr><td style="text-align: right">5</td><td style="text-align: right">set line width to 5</td></tr><tr><td style="text-align: right">6</td><td style="text-align: right">set line width to 6</td></tr><tr><td style="text-align: right">7</td><td style="text-align: right">set line width to 7</td></tr><tr><td style="text-align: right">8</td><td style="text-align: right">set line width to 8</td></tr><tr><td style="text-align: right">9</td><td style="text-align: right">set line width to 9</td></tr><tr><td style="text-align: right">B</td><td style="text-align: right">step backwards</td></tr><tr><td style="text-align: right">b</td><td style="text-align: right">turn 180° and take half a step forward</td></tr><tr><td style="text-align: right">c</td><td style="text-align: right">randomize the saturation</td></tr><tr><td style="text-align: right">D</td><td style="text-align: right">pen down (start drawing)</td></tr><tr><td style="text-align: right">f</td><td style="text-align: right">half a step forward</td></tr><tr><td style="text-align: right">F</td><td style="text-align: right">step Forward</td></tr><tr><td style="text-align: right">G</td><td style="text-align: right">same as F</td></tr><tr><td style="text-align: right">l</td><td style="text-align: right">increase the step size by 1</td></tr><tr><td style="text-align: right">n</td><td style="text-align: right">set line width to 0.5</td></tr><tr><td style="text-align: right">O</td><td style="text-align: right">choose a random opacity value</td></tr><tr><td style="text-align: right">o</td><td style="text-align: right">draw a circle with radius step/4</td></tr><tr><td style="text-align: right">q</td><td style="text-align: right">draw a square with side length step/4</td></tr><tr><td style="text-align: right">r</td><td style="text-align: right">turn randomly by 10° 15° 30° 45° or 60°</td></tr><tr><td style="text-align: right">s</td><td style="text-align: right">decrease the step size by 1</td></tr><tr><td style="text-align: right">T</td><td style="text-align: right">change the hue at random</td></tr><tr><td style="text-align: right">t</td><td style="text-align: right">shift the hue by 5°</td></tr><tr><td style="text-align: right">U</td><td style="text-align: right">lift the pen (stop drawing)</td></tr><tr><td style="text-align: right">V</td><td style="text-align: right">same as B</td></tr></table><h2 id="Arbitrary-functions"><a class="docs-heading-anchor" href="#Arbitrary-functions">Arbitrary functions</a><a id="Arbitrary-functions-1"></a><a class="docs-heading-anchor-permalink" href="#Arbitrary-functions" title="Permalink"></a></h2><p>You can define one external function in an LSystem. Whenever you include the <code>*</code> character in a rule, a function passed to <code>drawLSystem()</code> using the keyword option <code>asteriskfunction</code> will be called. This function accesses the Luxor turtle that&#39;s currently busy drawing the LSystem.</p><p>In the next example, a circle is drawn whenever the evaluation encounters a <code>*</code>. The advantage of using this (rather than the <code>o</code>) is that the radius of the circle can be made to vary with the distance from the center.</p><pre><code class="language-julia hljs">phyllotax = LSystem([&quot;A&quot; =&gt; &quot;A+[UFD*]ll&quot;], &quot;A&quot;)
+
+counter = 0
+f(t::Turtle) = begin
+   global counter
+   fontsize(22)
+   d = distance(O, Point(t.xpos, t.ypos))
+   sethue(HSL(mod(counter, 360), 0.8, 0.5))
+   circle(Point(t.xpos, t.ypos), rescale(d, 1, 200, 3, 15), :fill)
+   counter += 1
+end
+
+drawLSystem(phyllotax,
+   forward=65,
+   turn=137.5,
+   iterations=200,
+   startingx=0,
+   startingy=0,
+   width=1000,
+   height=1000,
+   filename=:png,
+   asteriskfunction=f
+)</code></pre><img src="index-38f9a270.png" alt="Example block output"/><p>In the next example, the asterisk function <code>f(t::Turtle)</code> passed to <code>drawLSystem()</code> is a bit disruptive. It changes the line width, sets the color, and then draws a group of rescaled pentagons at the turtle&#39;s current location and other rotationally symmetrical places. Then, it sets the opacity to 0. The turtle never realises this and never resets it (the <code>t</code> hue-shifting rule uses <code>Luxor.sethue()</code> which doesn&#39;t change the current opacity). So all the lines drawn by the turtle are completely transparent, leaving just the pentagons visible.</p><pre><code class="language-julia hljs">using Lindenmayer, Luxor, Colors
+
+recursive = LSystem([
+   &quot;F&quot; =&gt; &quot;G+F+G6t&quot;,
+   &quot;G&quot; =&gt; &quot;F*-G-F&quot;
+    ],
+   &quot;G2&quot;)
+
+f(t::Turtle) = begin
+    p = Point(t.xpos, t.ypos)
+    setline(3)
+    setopacity(1)
+    setcolor(HSB(rand(0:359), 0.7, 0.7))
+    for i in 0:4
+        @layer begin
+            rotate(i * deg2rad(72))
+            ngon(p, rescale(distance(p, O), 1, 1000, 3, 20), 5, 0, :stroke)
+        end
+    end
+    setopacity(0.0)
+end
+
+drawLSystem(recursive,
+    forward=10,
+    turn=72,
+    iterations= 7,
+    startingx = 0,
+    startingy = 0,
+    width=800,
+    height=1000,
+    backgroundcolor = colorant&quot;black&quot;,
+    filename=:png,
+    asteriskfunction = f)</code></pre><img src="index-7f1eee89.png" alt="Example block output"/><h2 id="Custom-evaluations"><a class="docs-heading-anchor" href="#Custom-evaluations">Custom evaluations</a><a id="Custom-evaluations-1"></a><a class="docs-heading-anchor-permalink" href="#Custom-evaluations" title="Permalink"></a></h2><p><code>drawLSystem()</code> has plenty of options, but you might prefer to use an LSystem in a regular Luxor workflow. To do this, use the <code>Lindenmayer.evaluate()</code> and <code>Lindenmayer.render()</code> functions separately. </p><p>After <code>Lindenmayer.evaluate()</code> has run, the LSystem struct has all the turtle operations stored (as UInt16 integers) in the <code>.state</code> field. <code>Lindenmayer.render()</code> can convert these to Luxor turtle instructions.</p><pre><code class="language-julia hljs">using Lindenmayer
+using Luxor
+using Colors
+
+@drawsvg begin
+   background(&quot;black&quot;)
+   setlinecap(&quot;round&quot;)
+   penrose = LSystem(Dict(&quot;X&quot; =&gt; &quot;PM++QM----YM[-PM----XM]++t&quot;,
+         &quot;Y&quot; =&gt; &quot;+PM--QM[---XM--YM]+t&quot;,
+         &quot;P&quot; =&gt; &quot;-XM++YM[+++PM++QM]-t&quot;,
+         &quot;Q&quot; =&gt; &quot;--PM++++XM[+QM++++YM]--YMt&quot;,
+         &quot;M&quot; =&gt; &quot;F&quot;,
+         &quot;F&quot; =&gt; &quot;&quot;),
+      &quot;[Y]++[Y]++[Y]++[Y]++[Y]&quot;)
+
+   # evaluate the LSystem
+   Lindenmayer.evaluate(penrose, 5)
+
+   # create a turtle
+   🐢 = Turtle()
+   Penwidth(🐢, 5)
+   Pencolor(🐢, &quot;cyan&quot;)
+
+   # render the LSystem&#39;s evaluation to the drawing;
+   # forward step is 45
+   # turn angle is 36°
+   Lindenmayer.render(penrose, 🐢, 45, 36)
+end 800 800</code></pre><img src="index-991a97b0.svg" alt="Example block output"/><h2 id="Debugging"><a class="docs-heading-anchor" href="#Debugging">Debugging</a><a id="Debugging-1"></a><a class="docs-heading-anchor-permalink" href="#Debugging" title="Permalink"></a></h2><p>To debug:</p><pre><code class="nohighlight hljs">ENV[&quot;JULIA_DEBUG&quot;] = Lindenmayer</code></pre><p>To stop debugging:</p><pre><code class="nohighlight hljs">ENV[&quot;JULIA_DEBUG&quot;] = nothing</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Documentation built 2025-07-08T14:20:35.201 with Julia 1.11.5 on Linux</code></pre></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="examples/">Examples »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.13.0 on <span class="colophon-date" title="Tuesday 8 July 2025 14:20">Tuesday 8 July 2025</span>. Using Julia version 1.11.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

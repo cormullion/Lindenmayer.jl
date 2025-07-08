@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Examples · Lindenmayer</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.png" alt="Lindenmayer logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">Lindenmayer</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Lindenmayer.jl</a></li><li class="is-active"><a class="tocitem" href>Examples</a><ul class="internal"><li><a class="tocitem" href="#Stack-use"><span>Stack use</span></a></li><li><a class="tocitem" href="#Koch"><span>Koch</span></a></li><li><a class="tocitem" href="#Peano"><span>Peano</span></a></li><li><a class="tocitem" href="#Peano-Gosper"><span>Peano Gosper</span></a></li><li><a class="tocitem" href="#segments"><span>32 segments</span></a></li><li><a class="tocitem" href="#Sierpinski"><span>Sierpinski</span></a></li><li><a class="tocitem" href="#Dragon-curves"><span>Dragon curves</span></a></li><li><a class="tocitem" href="#Hilbert-curves"><span>Hilbert curves</span></a></li><li><a class="tocitem" href="#Plants"><span>Plants</span></a></li><li><a class="tocitem" href="#Penrose-tiling"><span>Penrose tiling</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Examples</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Examples</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/cormullion/Lindenmayer.jl/blob/master/docs/src/examples.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Examples"><a class="docs-heading-anchor" href="#Examples">Examples</a><a id="Examples-1"></a><a class="docs-heading-anchor-permalink" href="#Examples" title="Permalink"></a></h1><h2 id="Stack-use"><a class="docs-heading-anchor" href="#Stack-use">Stack use</a><a id="Stack-use-1"></a><a class="docs-heading-anchor-permalink" href="#Stack-use" title="Permalink"></a></h2><p>This example shows the use of the <code>[</code> and <code>]</code> stack push and pop commands.</p><pre><code class="nohighlight hljs">simple  = LSystem(Dict(&quot;F&quot; =&gt; &quot;F[t+FoF-F]&quot;), &quot;F&quot;)
+drawLSystem(simple,
+   forward     = 50,
+   turn        = 90,
+   iterations  = 6,
+   startingx   = 0,
+   startingy   = -150,
+   filename    = &quot;simple.pdf&quot;,
+   showpreview = false)</code></pre><p><img src="../assets/figures/simple.png" alt/></p><h2 id="Koch"><a class="docs-heading-anchor" href="#Koch">Koch</a><a id="Koch-1"></a><a class="docs-heading-anchor-permalink" href="#Koch" title="Permalink"></a></h2><blockquote><p>The Koch snowflake (also known as the Koch curve, Koch star, or Koch island) is a fractal curve and one of the earliest fractals to have been described. It is based on the Koch curve, which appeared in a 1904 paper titled &quot;On a Continuous Curve Without Tangents, Constructible from Elementary Geometry&quot; by the Swedish mathematician Niels Fabian Helge von Koch.</p></blockquote><p>(Wikipedia)</p><pre><code class="nohighlight hljs">koch = LSystem(Dict(&quot;F&quot; =&gt; &quot;F+F-&quot;), &quot;F&quot;) # use turn of 60 degrees
+drawLSystem(koch,
+   forward     = 5,
+   turn        = 60,
+   iterations  = 6,
+   startingx   = -1800,
+   startingy   = 0,
+   width       = 4000,
+   height      = 4000,
+   filename    = &quot;koch.pdf&quot;,
+   showpreview = false)</code></pre><p><img src="../assets/figures/koch.png" alt/></p><pre><code class="nohighlight hljs">quadratic_Koch = LSystem(Dict(&quot;F&quot; =&gt; &quot;F+F--F+F&quot;), &quot;F&quot;) # 4 # 60 degrees
+drawLSystem(quadratic_Koch,
+   forward     = 10,
+   iterations  = 2,
+   turn        = 90,
+   filename    = &quot;quadratic_koch.pdf&quot;,
+   showpreview = false)</code></pre><pre><code class="nohighlight hljs">koch_snowflake = LSystem(Dict(&quot;F&quot; =&gt; &quot;F+F--F+F&quot;), &quot;F-F-F&quot;)</code></pre><pre><code class="nohighlight hljs">quadratic_Koch = LSystem(Dict(&quot;F&quot; =&gt; &quot;tF-F+F+FFF-F-F+F&quot;), &quot;4F+F+F+F&quot;)</code></pre><p><img src="../assets/figures/quadratic_koch.png" alt/></p><h2 id="Peano"><a class="docs-heading-anchor" href="#Peano">Peano</a><a id="Peano-1"></a><a class="docs-heading-anchor-permalink" href="#Peano" title="Permalink"></a></h2><p>The Peano curve is the first example of a space-filling curve to be discovered, by Giuseppe Peano in 1890.</p><pre><code class="nohighlight hljs">peano = LSystem(Dict(&quot;F&quot; =&gt; &quot;TF+F-F-toF-F+F+F+F-F&quot;), &quot;3F&quot;)
+drawLSystem(peano,
+   turn        = 90,
+   forward     = 20,
+   iterations  = 3,
+   startingx   = -250,
+   filename    = &quot;peano.pdf&quot;,
+   showpreview = false)</code></pre><p><img src="../assets/figures/peano.png" alt/></p><h2 id="Peano-Gosper"><a class="docs-heading-anchor" href="#Peano-Gosper">Peano Gosper</a><a id="Peano-Gosper-1"></a><a class="docs-heading-anchor-permalink" href="#Peano-Gosper" title="Permalink"></a></h2><p>The Peano-Gosper curve is a plane-filling function originally called a &quot;flowsnake&quot; by Bill Gosper and Martin Gardner. The name was invented by Benoit Mandelbrot.</p><pre><code class="nohighlight hljs">peano_gosper = LSystem(Dict(
+   &quot;X&quot; =&gt; &quot;X+YF++YF-tFX--FXFX-YF+&quot;,
+   &quot;Y&quot; =&gt; &quot;-FX+YFYF++YF+FX--FX-Y&quot; ),
+   &quot;FX&quot;)  # turn 60°
+
+drawLSystem(peano_gosper,
+   forward             = 10,
+   turn                = 60,
+   iterations          = 4,
+   startingpen         = (0, 0.8, 0.2),
+   startingorientation = -pi/2,
+   startingx           = -200,
+   startingy           =  -50,
+   filename            = &quot;peano-gosper.pdf&quot;,
+   showpreview         = false)</code></pre><p><img src="../assets/figures/peano-gosper.png" alt/></p><h2 id="segments"><a class="docs-heading-anchor" href="#segments">32 segments</a><a id="segments-1"></a><a class="docs-heading-anchor-permalink" href="#segments" title="Permalink"></a></h2><pre><code class="nohighlight hljs">thirty_two_segment = LSystem(Dict(
+   &quot;F&quot; =&gt; &quot;t-F+F-F-F+F+FF-F+F+FF+F-F-FF+FF-FF+F+F-FF-F-F+FF-F-F+F+F-F+&quot;),
+   &quot;F+F+F+F&quot;)
+
+drawLSystem(thirty_two_segment,
+   forward=5,
+   iterations=2,
+   turn=90,
+   filename=&quot;32segments.pdf&quot;,
+   showpreview=false)</code></pre><p><img src="../assets/figures/32segments.png" alt/></p><h2 id="Sierpinski"><a class="docs-heading-anchor" href="#Sierpinski">Sierpinski</a><a id="Sierpinski-1"></a><a class="docs-heading-anchor-permalink" href="#Sierpinski" title="Permalink"></a></h2><pre><code class="nohighlight hljs">sierpinski_triangle = LSystem(Dict(
+   &quot;F&quot; =&gt; &quot;G+F+Gt&quot;,
+   &quot;G&quot; =&gt; &quot;F-G-F&quot;),
+   &quot;G&quot;) # 60°
+
+drawLSystem(sierpinski_triangle,
+   forward=3,
+   startingx=-400,
+   startingy= -350,
+   turn=60,
+   iterations=8,
+   filename=&quot;sierpinski-triangle.pdf&quot;,
+   showpreview=false)</code></pre><p><img src="../assets/figures/sierpinski-triangle.png" alt/></p><pre><code class="nohighlight hljs">square_curve = LSystem(Dict(
+   &quot;X&quot; =&gt; &quot;XF-F+F-XF+F+XtF-F+F-X&quot;),
+   &quot;F+XF+F+XF&quot;)</code></pre><h2 id="Dragon-curves"><a class="docs-heading-anchor" href="#Dragon-curves">Dragon curves</a><a id="Dragon-curves-1"></a><a class="docs-heading-anchor-permalink" href="#Dragon-curves" title="Permalink"></a></h2><pre><code class="nohighlight hljs">dragon_curve = LSystem(Dict(
+   &quot;F&quot; =&gt; &quot;F+G+t&quot;,
+   &quot;G&quot; =&gt; &quot;-F-G&quot;),
+   &quot;F&quot;) #  90 degrees
+
+drawLSystem(dragon_curve,
+   forward     = 12,
+   turn        = 90,
+   iterations  = 10,
+   filename    = &quot;dragon_curve.pdf&quot;,
+   showpreview = false)</code></pre><p><img src="../assets/figures/dragon_curve.png" alt/></p><h2 id="Hilbert-curves"><a class="docs-heading-anchor" href="#Hilbert-curves">Hilbert curves</a><a id="Hilbert-curves-1"></a><a class="docs-heading-anchor-permalink" href="#Hilbert-curves" title="Permalink"></a></h2><p>A Hilbert curve (also known as a Hilbert space-filling curve) is a continuous fractal space-filling curve first described by the German mathematician David Hilbert in 1891, as a variant of the space-filling Peano curves discovered by Giuseppe Peano in 1890.</p><pre><code class="nohighlight hljs">hilbert_curve = LSystem(Dict(
+   &quot;L&quot; =&gt; &quot;+RF-LFL-tFR+&quot;,
+   &quot;R&quot; =&gt; &quot;-LF+RFR+FL-&quot;),
+   &quot;3L&quot;) # 90°
+drawLSystem(hilbert_curve,
+   forward     = 25,
+   turn        = 90,
+   iterations  = 4,
+   startingx   = -200,
+   startingy   = -200,
+   filename    = &quot;hilbert_curve.pdf&quot;,
+   showpreview = false)</code></pre><p><img src="../assets/figures/hilbert_curve.png" alt/></p><pre><code class="nohighlight hljs">hilbert = LSystem(Dict(
+   &quot;L&quot; =&gt; &quot;+RF-LFL-cFR+&quot;,
+   &quot;R&quot; =&gt; &quot;-LF+RFR+FL-&quot;),
+   &quot;1L&quot;)
+
+drawLSystem(hilbert,
+   forward     = 12,
+   turn        = 90,
+   iterations  = 6,
+   startingx   = -450,
+   startingy   = -450,
+   filename    = &quot;hilbert.pdf&quot;,
+   showpreview = false)</code></pre><p><img src="../assets/figures/hilbert.png" alt/></p><pre><code class="nohighlight hljs">hilbert_curve2 = LSystem(Dict(
+   &quot;X&quot; =&gt; &quot;XFYFX+F+YFXFcY-F-XFYFX&quot;,
+   &quot;Y&quot; =&gt; &quot;YFXFY-F-XFYFX+F+YFXFY&quot;),
+   &quot;2X&quot;)
+
+drawLSystem(hilbert_curve2,
+   forward     = 10,
+   turn        = 90,
+   iterations  = 4,
+   startingx   = -450,
+   startingy   = -450,
+   filename    = &quot;hilbert_curve2.pdf&quot;,
+   showpreview = false)</code></pre><p><img src="../assets/figures/hilbert_curve2.png" alt/></p><h2 id="Plants"><a class="docs-heading-anchor" href="#Plants">Plants</a><a id="Plants-1"></a><a class="docs-heading-anchor-permalink" href="#Plants" title="Permalink"></a></h2><pre><code class="nohighlight hljs">plant = LSystem(Dict(
+   &quot;F&quot; =&gt; &quot;F[-F]cF[+F][F]&quot;),
+   &quot;F&quot;) # use turn eg 17° or 23°
+
+drawLSystem(plant,
+   forward             = 7,
+   startingpen         = (0, 0.8, 0.3),
+   startingx           = 0,
+   startingy           =  460,
+   startingorientation = -pi/2,
+   turn                = 23,
+   iterations          = 6,
+   filename            = &quot;plant.pdf&quot;,
+   showpreview         = false)</code></pre><p><img src="../assets/figures/plant.png" alt/></p><pre><code class="nohighlight hljs">plant1 = LSystem(Dict(
+   &quot;F&quot; =&gt; &quot;FF&quot;,
+   &quot;X&quot; =&gt; &quot;F−[[cX]+X]+F[+FX]−X&quot;),
+   &quot;1X&quot;)
+
+drawLSystem(plant1,
+   forward             = 3,
+   turn                = 13,
+   iterations          = 7,
+   startingpen         = (0, 0.8, 0.2),
+   startingorientation = -pi/2,
+   startingx           = -50,
+   startingy           =  450,
+   filename            = &quot;plant1.pdf&quot;,
+   showpreview         = false)</code></pre><p><img src="../assets/figures/plant1.png" alt/></p><pre><code class="nohighlight hljs">branch  = LSystem(Dict(
+   &quot;F&quot; =&gt; &quot;FF-[F+F+Fc]+[+F-F-F][+++F+F-F---][---F+F-F---]&quot;),
+   &quot;1FFFF&quot;)
+
+drawLSystem(branch,
+   forward             = 12,
+   turn                = 20,
+   iterations          = 3,
+   startingpen         = (0, 0.9, 0.2),
+   startingorientation = -pi/2,
+   startingx           = 0,
+   startingy           =  300,
+   filename            = &quot;branch.pdf&quot;,
+   showpreview         = false)</code></pre><p><img src="../assets/figures/branch.png" alt/></p><h2 id="Penrose-tiling"><a class="docs-heading-anchor" href="#Penrose-tiling">Penrose tiling</a><a id="Penrose-tiling-1"></a><a class="docs-heading-anchor-permalink" href="#Penrose-tiling" title="Permalink"></a></h2><pre><code class="nohighlight hljs">penrose = LSystem(Dict(
+   &quot;X&quot;  =&gt;  &quot;PM++QM----YM[-PM----XM]++t&quot;,
+   &quot;Y&quot;  =&gt; &quot;+PM--QM[---XM--YM]+t&quot;,
+   &quot;P&quot;  =&gt; &quot;-XM++YM[+++PM++QM]-t&quot;,
+   &quot;Q&quot;  =&gt; &quot;--PM++++XM[+QM++++YM]--YMt&quot;,
+   &quot;M&quot;  =&gt; &quot;F&quot;,
+   &quot;F&quot;  =&gt; &quot;&quot;),
+   &quot;1[Y]++[Y]++[Y]++[Y]++[Y]&quot;) # 36 degrees
+
+drawLSystem(penrose,
+   forward             = 25,
+   turn                = 36,
+   iterations          = 7,
+   startingpen         = (.5, 0.8, 0.2),
+   startingorientation = -pi/2,
+   startingx           = 0,
+   startingy           = 0,
+   filename            = &quot;penrose.pdf&quot;,
+   showpreview         = false)</code></pre><p><img src="../assets/figures/penrose.png" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Lindenmayer.jl</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.25 on <span class="colophon-date" title="Sunday 9 July 2023 08:43">Sunday 9 July 2023</span>. Using Julia version 1.9.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
